@@ -2,7 +2,7 @@
 Simple scripts to help with your linux administration.
 
 ## ping.sh
-Try to ping a port number of a hostname. If ping fails, a notification with sent from a Telegram bot. This is meant to be used with the crontab.
+Try to ping a port number of a hostname. If ping fails, a notification will be sent from a Telegram bot. This is meant to be used with the crontab.
 
 `NOTIFICATION_COOLDOWN` refers to the number of seconds to wait before the next notification can be sent. This is to prevent your chat from being flooded. You can set this to empty if you prefer to receive a notification every time this script is executed.
 
@@ -20,3 +20,8 @@ Options:
 - You may use the `-n` or `--dry-run` option.
 
 Download: `wget https://raw.githubusercontent.com/yyscolin/MiniBash/master/rsynker.sh`
+
+## check_ip.sh
+A simple cronjob script to check if your dynamic public IP address has been changed. If a change was detected, a notification will be sent from a Telegram bot.
+
+Download: `wget https://raw.githubusercontent.com/yyscolin/MiniBash/master/check_ip.sh`
