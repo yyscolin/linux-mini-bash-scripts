@@ -25,3 +25,8 @@ Download: `wget https://raw.githubusercontent.com/yyscolin/MiniBash/master/rsynk
 A simple cronjob script to check if your dynamic public IP address has been changed. If a change was detected, a notification will be sent from a Telegram bot.
 
 Download: `wget https://raw.githubusercontent.com/yyscolin/MiniBash/master/check_ip.sh`
+
+## disk_health.sh
+A simple cronjob script to check the SMART overall-health self-assessment test result of your disks, which is the equivalent of `smartctl -H /dev/sdX`. If the result is anything other than `PASSED`, a notification will be sent from a Telegram bot.
+
+Download: `wget https://raw.githubusercontent.com/yyscolin/MiniBash/master/disk_health.sh`
