@@ -1,16 +1,22 @@
 #!/bin/bash
 
-TELEGRAM_TOKEN=
-TELEGRAM_CHATID=
-DISKS="/dev/sdX /dev/sdY"
+if [ "$1" == "" ]; then
+  echo Error: No profile specified
+  exit 1
+elif [ ! -f "$1" ]; then
+  echo Error: Profile not found: $1
+  exit 1
+fi
 
-# ========================================
-# Do not change any code beyond this point
-# ========================================
+source $1
 
 for disk in $DISKS; do
-  status=$(smartctl -H $disk|grep "^SMART overall-health self-assessment test result:"|cut -d: -f2)
-  [ $status != PASSED ] && message="$message\nSMART OHSA test result for $disk: $status"
+  status=$(/usr/sbin/smartctl -H $disk|grep "^SMART overall-health self-assessment test result:"|cut -d: -f2)
+  if [ "$status" == "" ]; then
+    message="$message\nUnable to get SMART OHSA test result for $disk"
+  elif [ $status != PASSED ]; then
+    message="$message\nSMART OHSA test result for $disk: $status"
+  fi
 done
 
 if [ "$message" != "" ]; then

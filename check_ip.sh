@@ -1,13 +1,15 @@
 #!/bin/bash
 
-TELEGRAM_TOKEN=
-TELEGRAM_CHATID=
+if [ "$1" == "" ]; then
+  echo Error: No profile specified
+  exit 1
+elif [ ! -f "$1" ]; then
+  echo Error: Profile not found: $1
+  exit 1
+fi
 
-# ========================================
-# Do not change any code beyond this point
-# ========================================
+source $1
 
-recorded_ip=
 current_ip=$(curl -s ifconfig.me)
 [ "$recorded_ip" == "$current_ip" ] && exit 0
 
@@ -17,4 +19,4 @@ message="$HOSTNAME @$time\nPublic IP address changed to $current_ip"
 payload='{"chat_id":'$TELEGRAM_CHATID',"text":"'$message'"}'
 curl -X POST -H "Content-Type:application/json" -d "$payload" $api_url
 
-sed -i "s/^recorded_ip=.*/recorded_ip=$current_ip/" "$0"
+sed -i "s/^recorded_ip=.*/recorded_ip=$current_ip/" "$1"

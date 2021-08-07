@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# Set constants
-PING_HOST=example.com
-PING_PORT=22
-TELEGRAM_TOKEN=
-TELEGRAM_CHATID=
-NOTIFICATION_COOLDOWN=300
+if [ "$1" == "" ]; then
+  echo Error: No profile specified
+  exit 1
+elif [ ! -f "$1" ]; then
+  echo Error: Profile not found: $1
+  exit 1
+fi
 
-# ========================================
-# Do not change any code beyond this point
-# ========================================
-
-last_notified_at=
+source $1
 
 function send_message() {
   local message=$1
@@ -26,7 +23,7 @@ function send_message() {
 if [ $? == 0 ]; then
   if [ "$last_notified_at" != "" ]; then
     send_message "Successfully pinged $PING_HOST"
-    sed -i "s/^last_notified_at=.*/last_notified_at=/g" "$0"
+    sed -i "/^last_notified_at=.*/d" "$1"
   fi
   exit 0
 fi
@@ -40,5 +37,5 @@ fi
 
 if [ "$message" != "" ]; then
   send_message "$message"
-  sed -i "s/^last_notified_at=.*/last_notified_at=$current_timestamp/g" "$0"
+  echo "last_notified_at=$current_timestamp" >> "$1"
 fi

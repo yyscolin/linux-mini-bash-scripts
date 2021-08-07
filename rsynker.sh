@@ -1,29 +1,23 @@
 #!/bin/bash
 
-# Set constants
-SOURCE_DIR="$HOME/example/bin"
-BACKUP_PORT=22
-BACKUP_DIR="user@example.net:/home/user/sample"
-LOG_FILE=/var/log/rsynker/`date "+%Y-%m"`.log
-EXCLUDE=
+if [ "$1" == "" ]; then
+  echo Error: No profile specified
+  exit 1
+elif [ ! -f "$1" ]; then
+  echo Error: Profile not found: $1
+  exit 1
+fi
 
-# ========================================
-# Do not change any code beyond this point
-# ========================================
-
-switch=$1
+source $1
 
 basename=`basename "$0"`
-process_count=$(pgrep -c $basename)
+process_count=$(pgrep -cf "$basename $1")
 [ $process_count -gt 1 ] && exit 0
 
-excludes=$(cat "$0"|grep ^EXCLUDE=|grep -v ^EXCLUDE=$|sed s/^EXCLUDE/--exclude/)
-if [[ "$switch" == -n || "$switch" == --dry-run ]]; then
+excludes=$(cat "$1"|grep ^EXCLUDE=|grep -v ^EXCLUDE=$|sed s/^EXCLUDE/--exclude/)
+if [ "$IS_DRYRUN" == true ]; then
   rsync -avns --delete -e "ssh -p $BACKUP_PORT" $excludes "$SOURCE_DIR" "$BACKUP_DIR"
   exit 0
-elif [ "$switch" != "" ]; then
-  echo Error: Invalid switch: $switch
-  exit 1
 fi
 
 first_item=$(rsync -avns --delete -e "ssh -p $BACKUP_PORT" $excludes "$SOURCE_DIR" "$BACKUP_DIR"|head -n2|tail -n1)
