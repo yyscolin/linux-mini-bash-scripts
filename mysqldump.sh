@@ -22,7 +22,7 @@ source $1
 
 backup_name=$BACKUP_NAME.$(date +%Y-%m-%d.%H%M%S)
 
-cd
+cd /tmp
 mysqldump --defaults-extra-file="$MYSQL_CONFIG" --hex-blob $BACKUP_DATABASE > "$backup_name.sql" || exit 1
 
 tar -cf "$backup_name.tar" "$backup_name.sql" --remove-files
@@ -32,7 +32,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-7z a -sdel -p$ZIP_PASSWORD "$backup_name.tar.7z" "$backup_name.tar" &>/dev/null
+7z a -sdel -p$ZIP_PASSWORD "$BACKUP_FOLDER/$backup_name.tar.7z" "$backup_name.tar" &>/dev/null
 if [ $? -ne 0 ]; then
     rm "$backup_name.tar"
     echo Error: 7z compression failed
