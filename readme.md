@@ -6,6 +6,9 @@ Simple scripts to help with your linux administration.
 - Run the script like this: `./MiniBash/ping.sh ./MiniBash/profiles/ping.exmaple.sh`
 - Optional: Add into your crontab
 
+## mysqldump.sh
+Creates backup for mysql databases compressed into .tar.7z and then sent to a folder.
+
 ## ping.sh
 Try to ping a hostname, with an optional port number. If ping fails, a notification will be sent from a Telegram bot. This is meant to be used with the crontab.
 
