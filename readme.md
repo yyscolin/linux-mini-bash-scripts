@@ -6,6 +6,17 @@ Simple scripts to help with your linux administration.
 - Run the script like this: `./MiniBash/ping.sh ./MiniBash/profiles/ping.exmaple.sh`
 - Optional: Add into your crontab
 
+## ddns.sh
+A simple recurring script to check if your dynamic public IP address has been changed.
+
+If a change is detected:
+- a DNS record in Cloudflare can be changed.
+- a notification can be sent from a Telegram bot.
+
+Notes:
+- To use this script, copy `ddns.env.sample` to `ddns.<profile_name>.env` and use `ddns.sh <profile_name>`.
+- This script runs continuously in the background. Do not add to crontab.
+
 ## mysqldump.sh
 Creates backup for mysql databases compressed into .tar.7z and then sent to a folder.
 
@@ -24,9 +35,6 @@ This script is equivalent to using the rsync command with the `-a` and `--delete
 Options:
 - You can add as many `EXCLUDE` into the script to `--exclude` their patterns.
 - You may set the `IS_DRYRUN` option to `true`. This is the same as using the `-n` or `--dry-run` option for the rsync command.
-
-## check_ip.sh
-A simple cronjob script to check if your dynamic public IP address has been changed. If a change was detected, a notification will be sent from a Telegram bot.
 
 ## disk_health.sh
 A simple cronjob script to check the SMART overall-health self-assessment test result of your disks, which is the equivalent of `smartctl -H /dev/sdX`. If the result is anything other than `PASSED`, a notification will be sent from a Telegram bot.

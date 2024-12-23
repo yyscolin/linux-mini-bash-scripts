@@ -1,2 +1,4 @@
+*.env
+logs/*
 profiles/*
 !profiles/.keep
