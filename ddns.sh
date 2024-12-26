@@ -46,15 +46,24 @@ function check_ip() {
   source_env
   ip_current=$(curl -s ifconfig.me)
 
-  # IP address given by ifconfig.me is not in a valid IPv4 format
-  if [[ ! "$ip_current" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-    if [ "$ip_cached" != "NOT_IPV4" ]; then
-      print "Error: Response from ipconfig.me does not match IPv4 format:"
-      print "$ip_current"
-      sed -i "s/^ip_cached=.*/ip_cached=NOT_IPV4/" "$DIR/ddns.$profile.env"
+  # If failed to get a response from ifconfig.me
+  if [ "$ip_current" == "" ]; then
+    if [ "$error_cached" != "NO_REPLY" ]; then
+      print "Error: Failed to get a response from ifconfig.me"
+      sed -i "s/^error_cached=.*/error_cached=NO_REPLY/" "$DIR/ddns.$profile.env"
+    fi
+    return 1
+
+  # IP address given is not in a valid IPv4 format
+  elif [[ ! "$ip_current" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    if [ "$error_cached" != "NOT_IPV4" ]; then
+      print "Error: Response from ipconfig.me does not match IPv4 format: $ip_current"
+      sed -i "s/^error_cached=.*/error_cached=NOT_IPV4/" "$DIR/ddns.$profile.env"
     fi
     return 1
   fi
+
+  sed -i "s/^error_cached=.*/error_cached=/" "$DIR/ddns.$profile.env"
 
   # IP address remains unchanged
   [ "$ip_current" == "$ip_cached" ] && return 0
