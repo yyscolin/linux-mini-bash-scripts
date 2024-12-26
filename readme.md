@@ -14,7 +14,8 @@ If a change is detected:
 - a notification can be sent from a Telegram bot.
 
 Notes:
-- To use this script, copy `ddns.env.sample` to `ddns.<profile_name>.env` and use `ddns.sh <profile_name>`.
+- To use this script, copy `ddns.env.sample` to `ddns.env` and simply run the script using the command `ddns.sh`.
+- Optionally, to specify a profile, copy `ddns.env.sample` to `ddns.<profile_name>.env` and use `ddns.sh <profile_name>`.
 - This script runs continuously in the background. Do not add to crontab.
 
 ## mysqldump.sh
