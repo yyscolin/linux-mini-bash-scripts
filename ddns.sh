@@ -19,7 +19,7 @@ function print() {
 
   # Output to log file
   [ ! -d "$DIR/logs" ] && mkdir "$DIR/logs"
-  echo -e "$message" >> "$DIR/logs/$profile.log"
+  echo -e "$message" >> "$DIR/logs/ddns.$profile.log"
 
   # Output to Telegram
   if [ "$TG_TOKEN" != "" ] && [ "$TG_CHATID" != "" ]; then
