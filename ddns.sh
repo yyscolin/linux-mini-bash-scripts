@@ -4,10 +4,10 @@ DIR=$(dirname "$(realpath "$0")")
 SCRIPT_NAME=$(basename "$0" | sed 's/\.[^.]*$//') # w/o directory or file ext
 
 if [ "$1" == "" ]; then
-  ENV_FILE="$DIR/$SCRIPT_NAME.env"
+  ENV_FILE="$DIR/profiles/$SCRIPT_NAME.sh"
   LOG_FILE="$DIR/logs/$SCRIPT_NAME.log"
 else
-  ENV_FILE="$DIR/$SCRIPT_NAME.$1.env"
+  ENV_FILE="$DIR/profiles/$SCRIPT_NAME.$1.sh"
   LOG_FILE="$DIR/logs/$SCRIPT_NAME.$1.log"
 fi
 
@@ -42,7 +42,13 @@ source_env
 
 function check_ip() {
   source_env
-  ip_current=$(curl -s ifconfig.me)
+
+  local ip_current
+  if [ "$NETWORK_INTERFACE" == "" ]; then
+    ip_current=$(curl -s ifconfig.me)
+  else
+    ip_current=$(curl -s --interface $NETWORK_INTERFACE ifconfig.me)
+  fi
 
   # If failed to get a response from ifconfig.me
   if [ "$ip_current" == "" ]; then
