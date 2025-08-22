@@ -45,15 +45,15 @@ function check_ip() {
 
   local ip_current
   if [ "$NETWORK_INTERFACE" == "" ]; then
-    ip_current=$(curl -s ifconfig.me)
+    ip_current=$(curl -s -4 ifconfig.me/ip)
   else
-    ip_current=$(curl -s --interface $NETWORK_INTERFACE ifconfig.me)
+    ip_current=$(curl -s -4 --interface $NETWORK_INTERFACE ifconfig.me/ip)
   fi
 
-  # If failed to get a response from ifconfig.me
+  # If failed to get a response from ifconfig.me/ip
   if [ "$ip_current" == "" ]; then
     if [ "$error_cached" != "NO_REPLY" ]; then
-      print "Error: Failed to get a response from ifconfig.me"
+      print "Error: Failed to get a response from ifconfig.me/ip"
       sed -i "s/^error_cached=.*/error_cached=NO_REPLY/" "$ENV_FILE"
     fi
     return 1
